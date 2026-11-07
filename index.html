@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>语文 AI 实验室 · Languages AI Lab</title>
+<meta name="description" content="Small web tools for the Chinese Language classroom at River Valley High School: 庖丁, 字斟句酌, 词游记 and 杏坛 ClassroomBoard. Documented, open source and free to use.">
+<meta property="og:title" content="语文 AI 实验室 · Languages AI Lab">
+<meta property="og:description" content="Small web tools for the Chinese Language classroom: 庖丁, 字斟句酌, 词游记 and 杏坛 ClassroomBoard.">
+<meta name="theme-color" content="#14181D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23E8673C'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%2314181D' font-family='serif' font-weight='700'%3E%E8%AF%AD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #14181D;
+    --surface: #1A1F26;
+    --line: rgba(255,255,255,0.08);
+    --text: #ECEFEA;
+    --text-2: #D5DAD3;
+    --muted: #A3ACB6;
+    --faint: #8A949F;
+    --accent: #E8673C;
+    --accent-line: #E8673C80;
+    --live: #8FD9BA;
+    --proto: #F2C979;
+    --display: 'Space Grotesk', Inter, system-ui, sans-serif;
+    --serif-zh: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+    --wrap: 1200px;
+    --pad: clamp(20px, 5vw, 48px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: Inter, 'Noto Sans SC', 'PingFang SC', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #F2A98A; }
+  a:hover { color: #FFD0BC; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+  .zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; }
+  .skip { position: absolute; left: -9999px; top: 8px; background: var(--accent); color: var(--ground); padding: 10px 16px; z-index: 10; }
+  .skip:focus { left: 8px; }
+
+  /* Header */
+  header { border-bottom: 1px solid var(--line); }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; padding-bottom: 20px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+  .brand:hover { color: var(--text); }
+  .seal { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--accent); color: var(--ground); font-family: var(--serif-zh); font-weight: 700; font-size: 22px; border-radius: 4px; }
+  .brand-name { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-name strong { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: 0.01em; }
+  .brand-name span { font-size: 13px; color: var(--muted); }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+  nav a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; text-decoration: none; color: var(--text-2); font-size: 15px; }
+  nav a:hover { color: var(--text); }
+  nav a .zh { color: var(--faint); }
+  nav a.gh { border: 1px solid rgba(255,255,255,0.22); border-radius: 4px; color: var(--text); margin-left: 4px; }
+
+  /* Hero */
+  .hero {
+    border-bottom: 1px solid var(--line);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
+  }
+  .hero .wrap { padding-top: clamp(64px, 9vw, 120px); padding-bottom: clamp(72px, 10vw, 128px); display: flex; flex-direction: column; gap: 36px; }
+  .eyebrow { margin: 0; font-family: var(--display); font-weight: 500; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  .grid-title { margin: 0; display: flex; flex-wrap: wrap; }
+  .grid-title span {
+    --cell: clamp(52px, 10vw, 120px);
+    width: var(--cell); height: var(--cell);
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--accent-line);
+    margin: 0 -1.5px -1.5px 0;
+    font-family: var(--serif-zh); font-weight: 700;
+    font-size: calc(var(--cell) * 0.64); line-height: 1;
+  }
+  .grid-title span.ai { background: var(--accent); color: var(--ground); font-family: var(--display); font-weight: 600; font-size: calc(var(--cell) * 0.52); }
+  .lead { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+  .lead p { margin: 0; }
+  .lead .en { font-family: var(--display); font-weight: 500; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; text-wrap: pretty; }
+  .lead .zh { font-size: 18px; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 14px 24px; background: var(--accent); color: var(--ground); border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .btn:hover { color: var(--ground); filter: brightness(1.08); }
+  .btn .zh { font-weight: 500; }
+  .actions .text-link { color: var(--text-2); text-underline-offset: 4px; }
+
+  /* Sections */
+  section.block { border-bottom: 1px solid var(--line); }
+  section.block .wrap { padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); display: flex; flex-direction: column; gap: 40px; }
+  h2 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4vw, 44px); line-height: 1.1; }
+  h2 .zh { font-family: var(--serif-zh); font-weight: 600; color: var(--accent); }
+  .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 32px; }
+  .section-head p { margin: 0; color: var(--muted); }
+
+  /* Tool cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr)); gap: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; gap: 22px; }
+  .card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .tag { font-size: 13px; letter-spacing: 0.04em; color: var(--text-2); border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 4px 12px; }
+  .status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .status.live { color: var(--live); }
+  .status.proto { color: var(--proto); }
+  .status.proto::before { border-radius: 2px; }
+  .card h3 { margin: 0; font-family: var(--serif-zh); font-weight: 700; font-size: 44px; line-height: 1.1; }
+  .card h3 .latin { font-family: var(--display); font-weight: 600; font-size: 0.6em; color: var(--muted); margin-left: 10px; }
+  .card .sub { margin: 6px 0 0; font-family: var(--display); font-size: 18px; color: var(--muted); }
+  .card .desc { display: flex; flex-direction: column; gap: 8px; }
+  .card .desc p { margin: 0; color: var(--text-2); text-wrap: pretty; }
+  .card .desc p.zh { color: var(--muted); font-size: 15px; }
+  .card-links { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 15px; }
+  .card-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .card-links a.open { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .card-links a.open:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* Principles */
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; }
+  .principle { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 2px solid var(--accent-line); }
+  .principle .num { font-family: var(--display); font-size: 14px; color: var(--accent); }
+  .principle h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.3; }
+  .principle h3 .zh { display: block; font-weight: 500; font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .principle p { margin: 0; color: var(--text-2); text-wrap: pretty; }
+
+  /* Log */
+  .log { margin: 0; padding: 0; list-style: none; }
+  .log li { display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+  .log li:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .log .date { flex: 0 0 140px; font-family: var(--display); color: var(--muted); }
+  .log .tool { flex: 0 0 200px; font-weight: 600; }
+  .log .note { flex: 1 1 320px; color: var(--text-2); }
+
+  /* Footer */
+  footer .wrap { padding-top: clamp(56px, 7vw, 88px); padding-bottom: 48px; display: flex; flex-direction: column; gap: 40px; }
+  .about { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
+  .about > div { display: flex; flex-direction: column; gap: 10px; }
+  .about > div:first-child { flex: 1 1 420px; max-width: 620px; }
+  .about > div:last-child { flex: 1 1 320px; max-width: 420px; }
+  .about h2 { font-size: 24px; }
+  .about p { margin: 0; color: var(--text-2); }
+  .about p.zh { color: var(--muted); font-size: 15px; }
+  .about .contact { font-weight: 600; color: var(--accent); font-size: 17px; }
+  .fine { margin: 0; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--faint); }
+  .fine a { color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#tools">Skip to the tools</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="语文 AI 实验室 · Languages AI Lab, back to top">
+      <span class="seal" aria-hidden="true">语</span>
+      <span class="brand-name"><strong>Languages AI Lab</strong><span lang="zh-Hans">语文 AI 实验室</span></span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#tools">Tools <span class="zh" lang="zh-Hans">工具</span></a></li>
+        <li><a href="#log">Log <span class="zh" lang="zh-Hans">记录</span></a></li>
+        <li><a href="#about">About <span class="zh" lang="zh-Hans">关于</span></a></li>
+        <li><a class="gh" href="https://github.com/Arkdein">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="wrap">
+      <p class="eyebrow">H1 Chinese · H2 Translation · H2 Chinese Language &amp; Literature · River Valley High School</p>
+      <h1 class="grid-title" aria-label="语文 AI 实验室 · Languages AI Lab">
+        <span lang="zh-Hans" aria-hidden="true">语</span><span lang="zh-Hans" aria-hidden="true">文</span><span class="ai" aria-hidden="true">AI</span><span lang="zh-Hans" aria-hidden="true">实</span><span lang="zh-Hans" aria-hidden="true">验</span><span lang="zh-Hans" aria-hidden="true">室</span>
+      </h1>
+      <div class="lead">
+        <p class="en">Small web tools for the Chinese Language classroom, built with AI's help — documented, open source and free to use.</p>
+        <p class="zh" lang="zh-Hans">借助AI为华文课堂打造的网页小工具：有说明、开源、免费使用。</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="#tools">Browse the tools <span class="zh" lang="zh-Hans">浏览工具</span></a>
+        <a class="text-link" href="#principles">How the tools are built</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="tools" aria-labelledby="tools-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="tools-h">Tools <span class="zh" lang="zh-Hans">工具</span></h2>
+        <p>Each tool opens in the browser and can be added to a phone's home screen.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">H2 Translation</span>
+            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+          </div>
+          <div>
+            <h3 lang="zh-Hans">庖丁</h3>
+            <p class="sub">Páodīng · Sentence-structure analysis practice</p>
+          </div>
+          <div class="desc">
+            <p>Gamified practice in <span lang="zh-Hans">层次分析</span> (immediate-constituent analysis) of Chinese and English sentences. Students cut a sentence layer by layer and label each relation, with targeted feedback at every layer, a mistakes book and a PDF learning record for the teacher.</p>
+            <p class="zh" lang="zh-Hans">中英文句子层次分析闯关：逐层切分、标注关系，每一层都有针对性反馈；附错题本与学习记录PDF。</p>
+          </div>
+          <div class="card-links">
+            <a class="open" href="https://arkdein.github.io/paoding/">Open app →</a>
+            <a href="https://github.com/Arkdein/paoding#readme">Documentation</a>
+            <a href="https://github.com/Arkdein/paoding">Source</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">H2 Chinese Language &amp; Literature</span>
+            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+          </div>
+          <div>
+            <h3 lang="zh-Hans">字斟句酌</h3>
+            <p class="sub">Zìzhēn jùzhuó · Classical Chinese word practice</p>
+          </div>
+          <div class="desc">
+            <p>Practice for Paper 3 Q1(a) across the five prescribed classical prose texts: read with tap-to-gloss, then recall meanings in mock and spaced-review quizzes. Answers are marked against SEAB's tiered marking guides, and students email a PDF report to the teacher.</p>
+            <p class="zh" lang="zh-Hans">针对试卷三 1(a) 解释带点字词：五篇古代散文点读释义、模拟测验与间隔复习，按SEAB分级评分标准评分，可导出PDF报告。</p>
+          </div>
+          <div class="card-links">
+            <a class="open" href="https://arkdein.github.io/zizhen/">Open app →</a>
+            <a href="https://github.com/Arkdein/zizhen#readme">Documentation</a>
+            <a href="https://github.com/Arkdein/zizhen">Source</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">H1 Chinese Language</span>
+            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+          </div>
+          <div>
+            <h3 lang="zh-Hans">词游记</h3>
+            <p class="sub">Cíyóujì · Word Journey</p>
+          </div>
+          <div class="desc">
+            <p>H1 Chinese vocabulary as a journey: nine topical strands and an idiom bank become stops on a map, practised through spaced review, cloze, dictation and handwriting. It runs entirely in the student's browser, with no account and no server.</p>
+            <p class="zh" lang="zh-Hans">把H1华文词汇化为一段旅程：九大主题词库加成语库，间隔复习、填空、听写、书写，全在学生的浏览器中进行。</p>
+          </div>
+          <div class="card-links">
+            <a class="open" href="https://arkdein.github.io/ciyouji/">Open app →</a>
+            <a href="https://github.com/Arkdein/ciyouji#readme">Documentation</a>
+            <a href="https://github.com/Arkdein/ciyouji">Source</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <span class="tag">For teachers · Classroom display</span>
+            <span class="status proto">Prototype · <span lang="zh-Hans">原型</span></span>
+          </div>
+          <div>
+            <h3><span lang="zh-Hans">杏坛</span><span class="latin">ClassroomBoard</span></h3>
+            <p class="sub">Xìngtán · A board for running lessons</p>
+          </div>
+          <div class="desc">
+            <p>A classroom display board in the spirit of Classroomscreen: timer, name picker, groups, polls, thinking routines, a whiteboard with <span lang="zh-Hans">田字格</span>, dictation, stroke order and more. Class lists and layouts stay in the teacher's own browser.</p>
+            <p class="zh" lang="zh-Hans">课堂展示白板：计时、抽签、分组、投票、思维常规、田字格画板、听写、笔顺等；名单与版面只存于教师本机。</p>
+          </div>
+          <div class="card-links">
+            <a class="open" href="https://arkdein.github.io/xingtan/">Try the prototype →</a>
+            <a href="https://arkdein.github.io/xingtan/guide.html">User guide</a>
+            <a href="https://github.com/Arkdein/xingtan">Source</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="principles" aria-labelledby="principles-h">
+    <div class="wrap">
+      <h2 id="principles-h">How they are built <span class="zh" lang="zh-Hans">设计原则</span></h2>
+      <div class="principles">
+        <div class="principle">
+          <span class="num">01</span>
+          <h3>Progress stays on the device <span class="zh" lang="zh-Hans">进度留在本机</span></h3>
+          <p>No logins and no accounts. Progress is saved in each student's own browser, and nothing that identifies a student leaves it unless the student chooses to send it.</p>
+        </div>
+        <div class="principle">
+          <span class="num">02</span>
+          <h3>Built with AI, run without it <span class="zh" lang="zh-Hans">借助AI开发，运行不靠AI</span></h3>
+          <p>AI helped design and code these tools, but they do not call an AI service while students use them. Question banks and answer keys are set by the teacher.</p>
+        </div>
+        <div class="principle">
+          <span class="num">03</span>
+          <h3>Open to colleagues <span class="zh" lang="zh-Hans">开源共享</span></h3>
+          <p>Every tool's code and documentation are public on GitHub, so colleagues can read, reuse and adapt them for their own classes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="log" aria-labelledby="log-h">
+    <div class="wrap">
+      <h2 id="log-h">Log <span class="zh" lang="zh-Hans">更新记录</span></h2>
+      <ol class="log">
+        <li><span class="date">Nov 2026</span><span class="tool"><span lang="zh-Hans">杏坛</span> ClassroomBoard</span><span class="note">Prototype in active development.</span></li>
+        <li><span class="date">22 Oct 2026</span><span class="tool" lang="zh-Hans">字斟句酌</span><span class="note">Launched to H2 Chinese Language &amp; Literature students.</span></li>
+        <li><span class="date">5 Aug 2026</span><span class="tool">AI live translation</span><span class="note">Testbed at the 10th China Studies Perspectives Forum, used live by participating students.</span></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer id="about">
+  <div class="wrap">
+    <div class="about">
+      <div>
+        <h2>About <span class="zh" lang="zh-Hans">关于</span></h2>
+        <p>Built by Randall, Senior Teacher, Mother Tongue Languages (JC), River Valley High School.</p>
+        <p class="zh" lang="zh-Hans">由立化中学母语部（高中）高级教师设计与维护。</p>
+      </div>
+    </div>
+    <p class="fine">© 2026 · Source code at <a href="https://github.com/Arkdein">github.com/Arkdein</a> · Hosted on GitHub Pages</p>
+  </div>
+</footer>
+</body>
+</html>
