@@ -123,8 +123,8 @@
   .status.live { color: var(--live); }
   .status.proto { color: var(--proto); }
   .status.proto::before { border-radius: 2px; }
-  .card h3 { margin: 0; font-family: var(--serif-zh); font-weight: 700; font-size: 44px; line-height: 1.1; }
-  .card h3 .latin { font-family: var(--display); font-weight: 600; font-size: 0.6em; color: var(--muted); margin-left: 10px; }
+  .card h3 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; font-family: var(--serif-zh); font-weight: 700; font-size: 44px; line-height: 1.1; }
+  .card h3 .latin { font-family: var(--display); font-weight: 600; font-size: 0.6em; color: var(--muted); }
   .card .sub { margin: 6px 0 0; font-family: var(--display); font-size: 18px; color: var(--muted); }
   .card .desc { display: flex; flex-direction: column; gap: 8px; }
   .card .desc p { margin: 0; color: var(--text-2); text-wrap: pretty; }
@@ -133,6 +133,15 @@
   .card-links a { display: inline-flex; align-items: center; min-height: 44px; }
   .card-links a.open { font-weight: 600; color: var(--accent); text-decoration: none; }
   .card-links a.open:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+
+  .card-body { display: flex; flex-wrap: wrap; gap: 22px 28px; align-items: flex-start; }
+  .card-text { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+  .poster { flex: 0 0 132px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: var(--muted); font-size: 13px; }
+  .poster img { width: 132px; height: auto; aspect-ratio: 400 / 566; display: block; border-radius: 3px; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 6px 18px rgba(0,0,0,0.35); transition: transform .15s ease; }
+  .poster:hover { color: var(--text); }
+  .poster:hover img { transform: translateY(-2px); }
+  @media (max-width: 520px) { .poster { flex-basis: 100%; flex-direction: row; align-items: center; gap: 14px; } .poster img { width: 96px; } }
 
   /* Principles */
   .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; }
@@ -218,6 +227,8 @@
             <span class="tag">H2 Translation</span>
             <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
           </div>
+          <div class="card-body">
+            <div class="card-text">
           <div>
             <h3 lang="zh-Hans">庖丁</h3>
             <p class="sub">Páodīng · Sentence-structure analysis practice</p>
@@ -226,9 +237,14 @@
             <p>Gamified practice in <span lang="zh-Hans">层次分析</span> (immediate-constituent analysis) of Chinese and English sentences. Students cut a sentence layer by layer and label each relation, with targeted feedback at every layer, a mistakes book and a PDF learning record for the teacher.</p>
             <p class="zh" lang="zh-Hans">中英文句子层次分析闯关：逐层切分、标注关系，每一层都有针对性反馈；附错题本与学习记录PDF。</p>
           </div>
+          
+            </div>
+            <a class="poster" href="posters/paoding-poster.pdf" aria-label="Open the 庖丁 poster (PDF)"><img src="posters/paoding-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+          </div>
           <div class="card-links">
             <a class="open" href="https://arkdein.github.io/paoding/">Open app →</a>
             <a href="https://github.com/Arkdein/paoding#readme">Documentation</a>
+            <a href="posters/paoding-poster.pdf" download>Download poster</a>
             <a href="https://github.com/Arkdein/paoding">Source</a>
           </div>
         </article>
@@ -238,6 +254,8 @@
             <span class="tag">H2 Chinese Language &amp; Literature</span>
             <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
           </div>
+          <div class="card-body">
+            <div class="card-text">
           <div>
             <h3 lang="zh-Hans">字斟句酌</h3>
             <p class="sub">Zìzhēn jùzhuó · Classical Chinese word practice</p>
@@ -246,9 +264,14 @@
             <p>Practice for Paper 3 Q1(a) across the five prescribed classical prose texts: read with tap-to-gloss, then recall meanings in mock and spaced-review quizzes. Answers are marked against SEAB's tiered marking guides, and students email a PDF report to the teacher.</p>
             <p class="zh" lang="zh-Hans">针对试卷三 1(a) 解释带点字词：五篇古代散文点读释义、模拟测验与间隔复习，按SEAB分级评分标准评分，可导出PDF报告。</p>
           </div>
+          
+            </div>
+            <a class="poster" href="posters/zizhen-poster.pdf" aria-label="Open the 字斟句酌 poster (PDF)"><img src="posters/zizhen-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+          </div>
           <div class="card-links">
             <a class="open" href="https://arkdein.github.io/zizhen/">Open app →</a>
             <a href="https://github.com/Arkdein/zizhen#readme">Documentation</a>
+            <a href="posters/zizhen-poster.pdf" download>Download poster</a>
             <a href="https://github.com/Arkdein/zizhen">Source</a>
           </div>
         </article>
@@ -278,6 +301,8 @@
             <span class="tag">For teachers · Classroom display</span>
             <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
           </div>
+          <div class="card-body">
+            <div class="card-text">
           <div>
             <h3><span lang="zh-Hans">杏坛</span><span class="latin">ClassroomBoard</span></h3>
             <p class="sub">Xìngtán · A board for running lessons</p>
@@ -286,9 +311,14 @@
             <p>A classroom display board in the spirit of Classroomscreen: timer, name picker, groups, polls, thinking routines, a whiteboard with <span lang="zh-Hans">田字格</span>, dictation, stroke order and more. Class lists and layouts stay in the teacher's own browser.</p>
             <p class="zh" lang="zh-Hans">课堂展示白板：计时、抽签、分组、投票、思维常规、田字格画板、听写、笔顺等；名单与版面只存于教师本机。</p>
           </div>
+          
+            </div>
+            <a class="poster" href="posters/xingtan-poster.pdf" aria-label="Open the 杏坛 ClassroomBoard poster (PDF)"><img src="posters/xingtan-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+          </div>
           <div class="card-links">
             <a class="open" href="https://arkdein.github.io/xingtan/">Open app →</a>
             <a href="https://arkdein.github.io/xingtan/guide.html">User guide</a>
+            <a href="posters/xingtan-poster.pdf" download>Download poster</a>
             <a href="https://github.com/Arkdein/xingtan">Source</a>
           </div>
         </article>
