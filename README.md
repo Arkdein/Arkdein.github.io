@@ -22,8 +22,9 @@ Landing page for Randall's classroom web tools at River Valley High School. It l
 
 Everything is in `index.html`: one file, no build step.
 
+- **Two languages:** every piece of text appears twice, once with `class="l-en"` and once with `class="l-zh"`. The 中文 / EN switch in the header shows one set. When you change wording, change both.
+- **Default language:** follows the visitor's browser (Chinese if it prefers Chinese, otherwise English). A visitor's own choice is remembered on that device.
 - **Add a tool:** copy one `<article class="card">…</article>` block inside `<div class="cards">` and change the text and links.
-- **Status label:** `class="status live"` (In use, green) or `class="status proto"` (Prototype, amber).
 - **Log:** add a `<li>` at the top of `<ol class="log">`.
 - **Accent colour:** change `--accent` and `--accent-line` (same colour plus `80` for 50% opacity) at the top of the `<style>` block.
 

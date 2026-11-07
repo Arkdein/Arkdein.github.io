@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,9 +18,26 @@
 <meta name="twitter:image" content="https://arkdein.github.io/og-image.png">
 <meta name="theme-color" content="#14181D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23E8673C'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%2314181D' font-family='serif' font-weight='700'%3E%E8%AF%AD%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    var lang = null;
+    try { lang = localStorage.getItem('lab-lang'); } catch (e) {}
+    if (lang !== 'zh' && lang !== 'en') {
+      var prefs = navigator.languages || [navigator.language || ''];
+      lang = 'en';
+      for (var i = 0; i < prefs.length; i++) {
+        var p = String(prefs[i]).toLowerCase();
+        if (p.indexOf('zh') === 0) { lang = 'zh'; break; }
+        if (p.indexOf('en') === 0) { break; }
+      }
+    }
+    document.documentElement.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-Hans' : 'en');
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --ground: #14181D;
@@ -34,7 +51,7 @@
     --accent-line: #E8673C80;
     --live: #8FD9BA;
     --proto: #F2C979;
-    --display: 'Space Grotesk', Inter, system-ui, sans-serif;
+    --display: 'Space Grotesk', Inter, 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
     --serif-zh: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
     --wrap: 1200px;
     --pad: clamp(20px, 5vw, 48px);
@@ -55,6 +72,8 @@
   a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
   .wrap { max-width: var(--wrap); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
   .zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; }
+  html[data-lang="en"] .l-zh, html[data-lang="zh"] .l-en { display: none !important; }
+  html[data-lang="zh"] body { font-family: 'Noto Sans SC', 'PingFang SC', Inter, system-ui, sans-serif; line-height: 1.75; }
   .skip { position: absolute; left: -9999px; top: 8px; background: var(--accent); color: var(--ground); padding: 10px 16px; z-index: 10; }
   .skip:focus { left: 8px; }
 
@@ -66,7 +85,17 @@
   .seal { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--accent); color: var(--ground); font-family: var(--serif-zh); font-weight: 700; font-size: 22px; border-radius: 4px; }
   .brand-name { display: flex; flex-direction: column; line-height: 1.2; }
   .brand-name strong { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: 0.01em; }
-  .brand-name span { font-size: 13px; color: var(--muted); }
+  .brand-name > span { font-size: 13px; color: var(--muted); }
+  .brand-name strong.zh-strong { font-family: var(--serif-zh); font-weight: 700; font-size: 19px; letter-spacing: 0.04em; }
+  .brand-name > span[lang="en"] { font-family: var(--display); letter-spacing: 0.02em; }
+  .lang-li { margin-left: 4px; }
+  .lang-switch { display: inline-flex; border: 1px solid rgba(255,255,255,0.22); border-radius: 4px; overflow: hidden; }
+  .lang-switch button { appearance: none; border: 0; margin: 0; min-height: 44px; min-width: 52px; padding: 8px 12px; background: transparent; color: var(--text-2); font: inherit; font-size: 15px; cursor: pointer; }
+  .lang-switch button[lang="en"] { font-family: var(--display); }
+  .lang-switch button + button { border-left: 1px solid rgba(255,255,255,0.22); }
+  .lang-switch button:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .lang-switch button[aria-pressed="true"] { background: var(--accent); color: var(--ground); font-weight: 600; }
+  .lang-switch button:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
   nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
   nav a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; text-decoration: none; color: var(--text-2); font-size: 15px; }
   nav a:hover { color: var(--text); }
@@ -97,8 +126,10 @@
   .grid-title span.ai { background: var(--accent); color: var(--ground); font-family: var(--display); font-weight: 600; font-size: calc(var(--cell) * 0.52); }
   .lead { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
   .lead p { margin: 0; }
-  .lead .en { font-family: var(--display); font-weight: 500; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; text-wrap: pretty; }
-  .lead .zh { font-size: 18px; color: var(--muted); }
+  .lead .lead-main { font-family: var(--display); font-weight: 500; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; text-wrap: pretty; }
+  .lead.l-zh .lead-main { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-weight: 500; line-height: 1.5; letter-spacing: 0.02em; }
+  .lead .lead-sub { font-size: 18px; color: var(--muted); }
+  .lead.l-zh .lead-sub { font-family: var(--display); font-size: 17px; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
   .btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 14px 24px; background: var(--accent); color: var(--ground); border-radius: 4px; text-decoration: none; font-weight: 600; }
   .btn:hover { color: var(--ground); filter: brightness(1.08); }
@@ -109,9 +140,27 @@
   section.block { border-bottom: 1px solid var(--line); }
   section.block .wrap { padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); display: flex; flex-direction: column; gap: 40px; }
   h2 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4vw, 44px); line-height: 1.1; }
-  h2 .zh { font-family: var(--serif-zh); font-weight: 600; color: var(--accent); }
+  h2 > span { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+  h2 .acc-zh { font-family: var(--serif-zh); font-weight: 600; color: var(--accent); }
+  h2 > .l-zh { font-family: var(--serif-zh); font-weight: 700; letter-spacing: 0.04em; }
+  h2 .acc-en { font-family: var(--display); font-weight: 600; color: var(--accent); font-size: 0.62em; letter-spacing: 0; }
   .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 32px; }
   .section-head p { margin: 0; color: var(--muted); }
+  .section-head.stack { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .section-head .intro { font-size: 18px; color: var(--text-2); max-width: 720px; }
+
+  /* Use in class */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .step-num { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--accent); color: var(--ground); font-family: var(--display); font-weight: 600; font-size: 17px; }
+  .step h3 { margin: 4px 0 0; font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.3; }
+  .step h3.l-zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-weight: 700; }
+  .step p { margin: 0; color: var(--text-2); text-wrap: pretty; }
+  .shortlinks { margin: 0; color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+  .shortlinks a { font-family: var(--display); }
+  .use-notes { display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--line); max-width: 860px; }
+  .use-notes p { margin: 0; color: var(--text-2); }
+  .use-notes strong { color: var(--text); }
 
   /* Tool cards */
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr)); gap: 24px; }
@@ -128,7 +177,7 @@
   .card .sub { margin: 6px 0 0; font-family: var(--display); font-size: 18px; color: var(--muted); }
   .card .desc { display: flex; flex-direction: column; gap: 8px; }
   .card .desc p { margin: 0; color: var(--text-2); text-wrap: pretty; }
-  .card .desc p.zh { color: var(--muted); font-size: 15px; }
+  .card .sub.l-zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-size: 17px; }
   .card-links { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 15px; }
   .card-links a { display: inline-flex; align-items: center; min-height: 44px; }
   .card-links a.open { font-weight: 600; color: var(--accent); text-decoration: none; }
@@ -148,7 +197,7 @@
   .principle { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 2px solid var(--accent-line); }
   .principle .num { font-family: var(--display); font-size: 14px; color: var(--accent); }
   .principle h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.3; }
-  .principle h3 .zh { display: block; font-weight: 500; font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .principle h3 .l-zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-weight: 700; }
   .principle p { margin: 0; color: var(--text-2); text-wrap: pretty; }
 
   /* Log */
@@ -166,32 +215,40 @@
   .about > div:first-child { flex: 1 1 420px; max-width: 620px; }
   .about > div:last-child { flex: 1 1 320px; max-width: 420px; }
   .about h2 { font-size: 24px; }
+  .about h2 .acc-en { font-size: 0.7em; }
   .about p { margin: 0; color: var(--text-2); }
-  .about p.zh { color: var(--muted); font-size: 15px; }
   .about .contact { font-weight: 600; color: var(--accent); font-size: 17px; overflow-wrap: anywhere; }
   .fine { margin: 0; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--faint); }
   .fine a { color: var(--muted); }
 
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
 </style>
 </head>
 <body>
-<a class="skip" href="#tools">Skip to the tools</a>
+<a class="skip" href="#tools"><span class="l-en" lang="en">Skip to the tools</span><span class="l-zh" lang="zh-Hans">跳到工具列表</span></a>
 
 <header>
   <div class="wrap bar">
-    <a class="brand" href="#top" aria-label="语文 AI 实验室 · Languages AI Lab, back to top">
+    <a class="brand" href="#top">
       <span class="seal" aria-hidden="true">语</span>
-      <span class="brand-name"><strong>Languages AI Lab</strong><span lang="zh-Hans">语文 AI 实验室</span></span>
+      <span class="brand-name l-en" lang="en"><strong>Languages AI Lab</strong><span lang="zh-Hans">语文 AI 实验室</span></span>
+      <span class="brand-name l-zh" lang="zh-Hans"><strong class="zh-strong">语文 AI 实验室</strong><span lang="en">Languages AI Lab</span></span>
     </a>
     <nav aria-label="Main">
       <ul>
-        <li><a href="#tools">Tools <span class="zh" lang="zh-Hans">工具</span></a></li>
-        <li><a href="#log">Log <span class="zh" lang="zh-Hans">记录</span></a></li>
-        <li><a href="#about">About <span class="zh" lang="zh-Hans">关于</span></a></li>
+        <li><a href="#tools"><span class="l-en" lang="en">Tools</span><span class="l-zh" lang="zh-Hans">工具</span></a></li>
+        <li><a href="#use"><span class="l-en" lang="en">Use in class</span><span class="l-zh" lang="zh-Hans">课堂使用</span></a></li>
+        <li><a href="#log"><span class="l-en" lang="en">Log</span><span class="l-zh" lang="zh-Hans">更新记录</span></a></li>
+        <li><a href="#about"><span class="l-en" lang="en">About</span><span class="l-zh" lang="zh-Hans">关于</span></a></li>
         <li><a class="gh" href="https://github.com/Arkdein">
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
           GitHub</a></li>
+        <li class="lang-li">
+          <div class="lang-switch" role="group" aria-label="Language · 语言">
+            <button type="button" data-set="zh" lang="zh-Hans">中文</button><button type="button" data-set="en" lang="en">EN</button>
+          </div>
+        </li>
       </ul>
     </nav>
   </div>
@@ -201,15 +258,19 @@
   <section class="hero" id="top">
     <div class="wrap">
       <h1 class="grid-title" aria-label="语文 AI 实验室 · Languages AI Lab">
-        <span lang="zh-Hans" aria-hidden="true">语</span><span lang="zh-Hans" aria-hidden="true">文</span><span class="ai" aria-hidden="true">AI</span><span lang="zh-Hans" aria-hidden="true">实</span><span lang="zh-Hans" aria-hidden="true">验</span><span lang="zh-Hans" aria-hidden="true">室</span>
+        <span aria-hidden="true">语</span><span aria-hidden="true">文</span><span class="ai" aria-hidden="true">AI</span><span aria-hidden="true">实</span><span aria-hidden="true">验</span><span aria-hidden="true">室</span>
       </h1>
-      <div class="lead">
-        <p class="en">Small web tools for the Chinese Language classroom, built with AI's help — documented, open source and free to use.</p>
-        <p class="zh" lang="zh-Hans">借助AI为华文课堂打造的网页小工具：有说明、开源、免费使用。</p>
+      <div class="lead l-en" lang="en">
+        <p class="lead-main">Small web tools for the Chinese Language classroom, built with AI's help — documented, open source and free to use.</p>
+        <p class="lead-sub" lang="zh-Hans">借助 AI 为华文课堂打造的网页小工具。附使用说明，开源，免费使用。</p>
+      </div>
+      <div class="lead l-zh" lang="zh-Hans">
+        <p class="lead-main">借助 AI 为华文课堂打造的网页小工具。附使用说明，开源，免费使用。</p>
+        <p class="lead-sub" lang="en">Small web tools for the Chinese Language classroom, built with AI's help — documented, open source and free to use.</p>
       </div>
       <div class="actions">
-        <a class="btn" href="#tools">Browse the tools <span class="zh" lang="zh-Hans">浏览工具</span></a>
-        <a class="text-link" href="#principles">How the tools are built</a>
+        <a class="btn" href="#tools"><span class="l-en" lang="en">Browse the tools</span><span class="l-zh" lang="zh-Hans">浏览工具</span></a>
+        <a class="text-link" href="#principles"><span class="l-en" lang="en">How the tools are built</span><span class="l-zh" lang="zh-Hans">了解设计理念</span></a>
       </div>
     </div>
   </section>
@@ -217,140 +278,159 @@
   <section class="block" id="tools" aria-labelledby="tools-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="tools-h">Tools <span class="zh" lang="zh-Hans">工具</span></h2>
-        <p>Each tool opens in the browser and can be added to a phone's home screen.</p>
+        <h2 id="tools-h"><span class="l-en" lang="en">Tools <span class="acc-zh" lang="zh-Hans">工具</span></span><span class="l-zh" lang="zh-Hans">工具 <span class="acc-en" lang="en">Tools</span></span></h2>
+        <p class="l-en" lang="en">Each tool opens in the browser and can be added to a phone's home screen.</p><p class="l-zh" lang="zh-Hans">所有工具都可直接在浏览器中打开，也可添加到手机主屏幕。</p>
       </div>
-
       <div class="cards">
         <article class="card">
           <div class="card-top">
-            <span class="tag">H2 Translation</span>
-            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+            <span class="tag l-en" lang="en">H2 Translation</span><span class="tag l-zh" lang="zh-Hans">H2 翻译</span>
+            <span class="status live"><span class="l-en" lang="en">In use</span><span class="l-zh" lang="zh-Hans">使用中</span></span>
           </div>
           <div class="card-body">
             <div class="card-text">
-          <div>
-            <h3 lang="zh-Hans">庖丁</h3>
-            <p class="sub">Páodīng · Sentence-structure analysis practice</p>
-          </div>
-          <div class="desc">
-            <p>Gamified practice in <span lang="zh-Hans">层次分析</span> (immediate-constituent analysis) of Chinese and English sentences. Students cut a sentence layer by layer and label each relation, with targeted feedback at every layer, a mistakes book and a PDF learning record for the teacher.</p>
-            <p class="zh" lang="zh-Hans">中英文句子层次分析闯关：逐层切分、标注关系，每一层都有针对性反馈；附错题本与学习记录PDF。</p>
-          </div>
-          
+              <div>
+                <h3><span lang="zh-Hans">庖丁</span></h3>
+                <p class="sub l-en" lang="en">Páodīng · Sentence-structure analysis practice</p><p class="sub l-zh" lang="zh-Hans">层次分析练习</p>
+              </div>
+              <div class="desc">
+                <p class="l-en" lang="en">Gamified practice in <span lang="zh-Hans">层次分析</span> (immediate-constituent analysis) of Chinese and English sentences. Students cut a sentence layer by layer and label each relation, with targeted feedback at every layer, a mistakes book and a PDF learning record for the teacher.</p><p class="l-zh" lang="zh-Hans">以闯关形式练习中英文句子的层次分析：学生逐层切分句子并标注结构关系，每一层都有针对性的反馈。另设错题本，还可导出 PDF 学习记录交给老师。</p>
+              </div>
             </div>
-            <a class="poster" href="posters/paoding-poster.pdf" aria-label="Open the 庖丁 poster (PDF)"><img src="posters/paoding-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+            <a class="poster" href="posters/paoding-poster.pdf"><img src="posters/paoding-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span class="l-en" lang="en">Poster · PDF</span><span class="l-zh" lang="zh-Hans">海报 · PDF</span></a>
           </div>
           <div class="card-links">
-            <a class="open" href="https://arkdein.github.io/paoding/">Open app →</a>
-            <a href="https://github.com/Arkdein/paoding#readme">Documentation</a>
-            <a href="posters/paoding-poster.pdf" download>Download poster</a>
-            <a href="https://github.com/Arkdein/paoding">Source</a>
+            <a class="open" href="https://arkdein.github.io/paoding/"><span class="l-en" lang="en">Open app →</span><span class="l-zh" lang="zh-Hans">打开应用 →</span></a>
+            <a href="https://github.com/Arkdein/paoding#readme"><span class="l-en" lang="en">Documentation</span><span class="l-zh" lang="zh-Hans">说明文档（英文）</span></a>
+            <a href="posters/paoding-poster.pdf" download><span class="l-en" lang="en">Download poster</span><span class="l-zh" lang="zh-Hans">下载海报</span></a>
+            <a href="https://github.com/Arkdein/paoding"><span class="l-en" lang="en">Source</span><span class="l-zh" lang="zh-Hans">源代码</span></a>
           </div>
         </article>
-
         <article class="card">
           <div class="card-top">
-            <span class="tag">H2 Chinese Language &amp; Literature</span>
-            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+            <span class="tag l-en" lang="en">H2 Chinese Language &amp; Literature</span><span class="tag l-zh" lang="zh-Hans">H2 华文与文学</span>
+            <span class="status live"><span class="l-en" lang="en">In use</span><span class="l-zh" lang="zh-Hans">使用中</span></span>
           </div>
           <div class="card-body">
             <div class="card-text">
-          <div>
-            <h3 lang="zh-Hans">字斟句酌</h3>
-            <p class="sub">Zìzhēn jùzhuó · Classical Chinese word practice</p>
-          </div>
-          <div class="desc">
-            <p>Practice for Paper 3 Q1(a) across the five prescribed classical prose texts: read with tap-to-gloss, then recall meanings in mock and spaced-review quizzes. Answers are marked against SEAB's tiered marking guides, and students email a PDF report to the teacher.</p>
-            <p class="zh" lang="zh-Hans">针对试卷三 1(a) 解释带点字词：五篇古代散文点读释义、模拟测验与间隔复习，按SEAB分级评分标准评分，可导出PDF报告。</p>
-          </div>
-          
+              <div>
+                <h3><span lang="zh-Hans">字斟句酌</span></h3>
+                <p class="sub l-en" lang="en">Zìzhēn jùzhuó · Classical Chinese word practice</p><p class="sub l-zh" lang="zh-Hans">文言字词练习</p>
+              </div>
+              <div class="desc">
+                <p class="l-en" lang="en">Practice for Paper 3 Q1(a) across the five prescribed classical prose texts: read with tap-to-gloss, then recall meanings in mock and spaced-review quizzes. Answers are marked against SEAB's tiered marking guides, and students email a PDF report to the teacher.</p><p class="l-zh" lang="zh-Hans">针对试卷三第1(a)题，涵盖五篇指定古文。学生先阅读原文，点击字词即可查看释义；再在模拟测验和间隔复习中回忆字义。答案按 SEAB 分级评分标准批改，学生可将 PDF 学习记录电邮给老师。</p>
+              </div>
             </div>
-            <a class="poster" href="posters/zizhen-poster.pdf" aria-label="Open the 字斟句酌 poster (PDF)"><img src="posters/zizhen-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+            <a class="poster" href="posters/zizhen-poster.pdf"><img src="posters/zizhen-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span class="l-en" lang="en">Poster · PDF</span><span class="l-zh" lang="zh-Hans">海报 · PDF</span></a>
           </div>
           <div class="card-links">
-            <a class="open" href="https://arkdein.github.io/zizhen/">Open app →</a>
-            <a href="https://github.com/Arkdein/zizhen#readme">Documentation</a>
-            <a href="posters/zizhen-poster.pdf" download>Download poster</a>
-            <a href="https://github.com/Arkdein/zizhen">Source</a>
+            <a class="open" href="https://arkdein.github.io/zizhen/"><span class="l-en" lang="en">Open app →</span><span class="l-zh" lang="zh-Hans">打开应用 →</span></a>
+            <a href="https://github.com/Arkdein/zizhen#readme"><span class="l-en" lang="en">Documentation</span><span class="l-zh" lang="zh-Hans">说明文档（英文）</span></a>
+            <a href="posters/zizhen-poster.pdf" download><span class="l-en" lang="en">Download poster</span><span class="l-zh" lang="zh-Hans">下载海报</span></a>
+            <a href="https://github.com/Arkdein/zizhen"><span class="l-en" lang="en">Source</span><span class="l-zh" lang="zh-Hans">源代码</span></a>
           </div>
         </article>
-
         <article class="card">
           <div class="card-top">
-            <span class="tag">H1 Chinese Language</span>
-            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+            <span class="tag l-en" lang="en">H1 Chinese Language</span><span class="tag l-zh" lang="zh-Hans">H1 华文</span>
+            <span class="status live"><span class="l-en" lang="en">In use</span><span class="l-zh" lang="zh-Hans">使用中</span></span>
           </div>
           <div class="card-body">
             <div class="card-text">
-          <div>
-            <h3 lang="zh-Hans">词游记</h3>
-            <p class="sub">Cíyóujì · Word Journey</p>
-          </div>
-          <div class="desc">
-            <p>H1 Chinese vocabulary as a journey: nine topical strands and an idiom bank become stops on a map, practised through spaced review, cloze, dictation and handwriting. It runs entirely in the student's browser, with no account and no server.</p>
-            <p class="zh" lang="zh-Hans">把H1华文词汇化为一段旅程：九大主题词库加成语库，间隔复习、填空、听写、书写，全在学生的浏览器中进行。</p>
-          </div>
-          
+              <div>
+                <h3><span lang="zh-Hans">词游记</span></h3>
+                <p class="sub l-en" lang="en">Cíyóujì · Word Journey</p><p class="sub l-zh" lang="zh-Hans">词汇之旅</p>
+              </div>
+              <div class="desc">
+                <p class="l-en" lang="en">H1 Chinese vocabulary as a journey: nine topical strands and an idiom bank become stops on a map, practised through spaced review, cloze, dictation and handwriting. It runs entirely in the student's browser, with no account and no server.</p><p class="l-zh" lang="zh-Hans">把 H1 华文词汇变成一段旅程：九大主题词库和成语库化作地图上的一个个站点，通过间隔复习、填空、听写和书写来练习。完全在学生的浏览器中运行，无需账号，也不依赖服务器。</p>
+              </div>
             </div>
-            <a class="poster" href="posters/ciyouji-poster.pdf" aria-label="Open the 词游记 poster (PDF)"><img src="posters/ciyouji-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+            <a class="poster" href="posters/ciyouji-poster.pdf"><img src="posters/ciyouji-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span class="l-en" lang="en">Poster · PDF</span><span class="l-zh" lang="zh-Hans">海报 · PDF</span></a>
           </div>
           <div class="card-links">
-            <a class="open" href="https://arkdein.github.io/ciyouji/">Open app →</a>
-            <a href="https://github.com/Arkdein/ciyouji#readme">Documentation</a>
-            <a href="posters/ciyouji-poster.pdf" download>Download poster</a>
-            <a href="https://github.com/Arkdein/ciyouji">Source</a>
+            <a class="open" href="https://arkdein.github.io/ciyouji/"><span class="l-en" lang="en">Open app →</span><span class="l-zh" lang="zh-Hans">打开应用 →</span></a>
+            <a href="https://github.com/Arkdein/ciyouji#readme"><span class="l-en" lang="en">Documentation</span><span class="l-zh" lang="zh-Hans">说明文档（英文）</span></a>
+            <a href="posters/ciyouji-poster.pdf" download><span class="l-en" lang="en">Download poster</span><span class="l-zh" lang="zh-Hans">下载海报</span></a>
+            <a href="https://github.com/Arkdein/ciyouji"><span class="l-en" lang="en">Source</span><span class="l-zh" lang="zh-Hans">源代码</span></a>
           </div>
         </article>
-
         <article class="card">
           <div class="card-top">
-            <span class="tag">For teachers · Classroom display</span>
-            <span class="status live">In use · <span lang="zh-Hans">使用中</span></span>
+            <span class="tag l-en" lang="en">For teachers · Classroom display</span><span class="tag l-zh" lang="zh-Hans">教师用 · 课堂展示</span>
+            <span class="status live"><span class="l-en" lang="en">In use</span><span class="l-zh" lang="zh-Hans">使用中</span></span>
           </div>
           <div class="card-body">
             <div class="card-text">
-          <div>
-            <h3><span lang="zh-Hans">杏坛</span><span class="latin">ClassroomBoard</span></h3>
-            <p class="sub">Xìngtán · A board for running lessons</p>
-          </div>
-          <div class="desc">
-            <p>A classroom display board in the spirit of Classroomscreen: timer, name picker, groups, polls, thinking routines, a whiteboard with <span lang="zh-Hans">田字格</span>, dictation, stroke order and more. Class lists and layouts stay in the teacher's own browser.</p>
-            <p class="zh" lang="zh-Hans">课堂展示白板：计时、抽签、分组、投票、思维常规、田字格画板、听写、笔顺等；名单与版面只存于教师本机。</p>
-          </div>
-          
+              <div>
+                <h3><span lang="zh-Hans">杏坛</span><span class="latin" lang="en">ClassroomBoard</span></h3>
+                <p class="sub l-en" lang="en">Xìngtán · A board for running lessons</p><p class="sub l-zh" lang="zh-Hans">上课用的展示板</p>
+              </div>
+              <div class="desc">
+                <p class="l-en" lang="en">A classroom display board in the spirit of Classroomscreen: timer, name picker, groups, polls, thinking routines, a whiteboard with <span lang="zh-Hans">田字格</span>, dictation, stroke order and more. Class lists and layouts stay in the teacher's own browser.</p><p class="l-zh" lang="zh-Hans">类似 Classroomscreen 的课堂展示板，提供计时器、随机点名、分组、投票、思维常规、田字格白板、听写、笔顺等功能。班级名单和版面只保存在老师自己的浏览器里。</p>
+              </div>
             </div>
-            <a class="poster" href="posters/xingtan-poster.pdf" aria-label="Open the 杏坛 ClassroomBoard poster (PDF)"><img src="posters/xingtan-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span>Poster <span lang="zh-Hans">海报</span> · PDF</span></a>
+            <a class="poster" href="posters/xingtan-poster.pdf"><img src="posters/xingtan-poster-thumb.jpg" alt="" width="132" height="187" loading="lazy"><span class="l-en" lang="en">Poster · PDF</span><span class="l-zh" lang="zh-Hans">海报 · PDF</span></a>
           </div>
           <div class="card-links">
-            <a class="open" href="https://arkdein.github.io/xingtan/">Open app →</a>
-            <a href="https://arkdein.github.io/xingtan/guide.html">User guide</a>
-            <a href="posters/xingtan-poster.pdf" download>Download poster</a>
-            <a href="https://github.com/Arkdein/xingtan">Source</a>
+            <a class="open" href="https://arkdein.github.io/xingtan/"><span class="l-en" lang="en">Open app →</span><span class="l-zh" lang="zh-Hans">打开应用 →</span></a>
+            <a href="https://arkdein.github.io/xingtan/guide.html"><span class="l-en" lang="en">User guide</span><span class="l-zh" lang="zh-Hans">使用指南</span></a>
+            <a href="posters/xingtan-poster.pdf" download><span class="l-en" lang="en">Download poster</span><span class="l-zh" lang="zh-Hans">下载海报</span></a>
+            <a href="https://github.com/Arkdein/xingtan"><span class="l-en" lang="en">Source</span><span class="l-zh" lang="zh-Hans">源代码</span></a>
           </div>
         </article>
       </div>
     </div>
   </section>
 
+  <section class="block" id="use" aria-labelledby="use-h">
+    <div class="wrap">
+      <div class="section-head stack">
+        <h2 id="use-h"><span class="l-en" lang="en">Use them in your class <span class="acc-zh" lang="zh-Hans">带进你的课堂</span></span><span class="l-zh" lang="zh-Hans">带进你的课堂 <span class="acc-en" lang="en">Use them in your class</span></span></h2>
+        <p class="intro l-en" lang="en">Any Chinese Language teacher is welcome to use these tools with their classes. They are free and need no sign-up.</p><p class="intro l-zh" lang="zh-Hans">欢迎各校华文老师在课堂上使用这些工具。完全免费，无需注册。</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">1</span>
+          <h3 class="l-en" lang="en">Share the link</h3><h3 class="l-zh" lang="zh-Hans">分享链接</h3>
+          <p class="l-en" lang="en">Post the tool's short link or QR code in Google Classroom, SLS, Teams or your class chat. Each poster has both.</p><p class="l-zh" lang="zh-Hans">把工具的短链接或二维码发到 Google Classroom、SLS、Teams 或班级群。每张海报上都印有短链接和二维码。</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">2</span>
+          <h3 class="l-en" lang="en">Students add it to their home screen</h3><h3 class="l-zh" lang="zh-Hans">让学生添加到主屏幕</h3>
+          <p class="l-en" lang="en">iPhone: open it in Safari, tap Share, then Add to Home Screen. Android: open it in Chrome, tap ⋮, then Install app. It then opens like an app and works offline. Progress is saved on the student's own phone, so there is nothing to log in to.</p><p class="l-zh" lang="zh-Hans">iPhone：用 Safari 打开，点“分享”，再选“添加到主屏幕”。Android：用 Chrome 打开，点右上角的 ⋮，再选“安装应用”。之后就能像普通应用一样打开，离线也能用。进度保存在学生自己的手机里，因此无需登录。</p>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">3</span>
+          <h3 class="l-en" lang="en">Collect the PDF reports</h3><h3 class="l-zh" lang="zh-Hans">收取 PDF 学习记录</h3>
+          <p class="l-en" lang="en">Ask students to export their learning record as a PDF and send it to you by email or through your class platform. <span lang="zh-Hans">庖丁</span> and <span lang="zh-Hans">字斟句酌</span> reports open with a one-page summary for the teacher.</p><p class="l-zh" lang="zh-Hans">请学生把学习记录导出为 PDF，通过电邮或班级平台交给你。庖丁和字斟句酌的学习记录开头附有一页“老师速览”。</p>
+        </li>
+      </ol>
+      <p class="shortlinks"><span class="l-en" lang="en">Short links:</span><span class="l-zh" lang="zh-Hans">短链接：</span> <span lang="zh-Hans">庖丁</span> <a href="https://bit.ly/paoding">bit.ly/paoding</a> · <span lang="zh-Hans">字斟句酌</span> <a href="https://bit.ly/zizhen">bit.ly/zizhen</a> · <span lang="zh-Hans">词游记</span> <a href="https://bit.ly/4sQvTgG">bit.ly/4sQvTgG</a></p>
+      <div class="use-notes">
+        <p class="l-en" lang="en"><strong>For your own lessons:</strong> <span lang="zh-Hans">杏坛</span> runs on the teacher's laptop. Open <a href="https://bit.ly/classroomboard">bit.ly/classroomboard</a> in Chrome or Edge and install it. Class lists stay in your browser.</p><p class="l-zh" lang="zh-Hans"><strong>自己上课用：</strong>杏坛在老师的手提电脑上运行。用 Chrome 或 Edge 打开 <a href="https://bit.ly/classroomboard">bit.ly/classroomboard</a>，再安装即可。班级名单只保存在你的浏览器里。</p>
+        <p class="l-en" lang="en">Want to adapt a question bank for your own texts or students? <a href="mailto:hoon_yao_tong_randall@moe.edu.sg?subject=Languages%20AI%20Lab%20collaboration">Email me</a>.</p><p class="l-zh" lang="zh-Hans">想根据自己的教材或学生程度改编题库？<a href="mailto:hoon_yao_tong_randall@moe.edu.sg?subject=Languages%20AI%20Lab%20collaboration">欢迎来信</a>。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="principles" aria-labelledby="principles-h">
     <div class="wrap">
-      <h2 id="principles-h">How they are built <span class="zh" lang="zh-Hans">设计原则</span></h2>
+      <h2 id="principles-h"><span class="l-en" lang="en">How they are built <span class="acc-zh" lang="zh-Hans">设计理念</span></span><span class="l-zh" lang="zh-Hans">设计理念 <span class="acc-en" lang="en">How they are built</span></span></h2>
       <div class="principles">
         <div class="principle">
           <span class="num">01</span>
-          <h3>Progress stays on the device <span class="zh" lang="zh-Hans">进度留在本机</span></h3>
-          <p>No logins and no accounts. Progress is saved in each student's own browser, and nothing that identifies a student leaves it unless the student chooses to send it.</p>
+          <h3><span class="l-en" lang="en">Progress stays on the device</span><span class="l-zh" lang="zh-Hans">进度留在本机</span></h3>
+          <p class="l-en" lang="en">No logins and no accounts. Progress is saved in each student's own browser, and nothing that identifies a student leaves it unless the student chooses to send it.</p><p class="l-zh" lang="zh-Hans">无需登录，也不设账号。学习进度保存在每位学生自己的浏览器里；除非学生主动发送，任何可识别学生身份的资料都不会离开设备。</p>
         </div>
         <div class="principle">
           <span class="num">02</span>
-          <h3>Built with AI, run without it <span class="zh" lang="zh-Hans">借助AI开发，运行不靠AI</span></h3>
-          <p>AI helped design and code these tools, but they do not call an AI service while students use them. Question banks and answer keys are set by the teacher.</p>
+          <h3><span class="l-en" lang="en">Built with AI, run without it</span><span class="l-zh" lang="zh-Hans">AI 协助开发，运行不靠 AI</span></h3>
+          <p class="l-en" lang="en">AI helped design and code these tools, but they do not call an AI service while students use them. Question banks and answer keys are set by the teacher.</p><p class="l-zh" lang="zh-Hans">这些工具在设计和编程时得到 AI 的协助，但学生使用时不会调用任何 AI 服务。题库和参考答案均由老师设定。</p>
         </div>
         <div class="principle">
           <span class="num">03</span>
-          <h3>Open to colleagues <span class="zh" lang="zh-Hans">开源共享</span></h3>
-          <p>Every tool's code and documentation are public on GitHub, so colleagues can read, reuse and adapt them for their own classes.</p>
+          <h3><span class="l-en" lang="en">Open to colleagues</span><span class="l-zh" lang="zh-Hans">开源共享</span></h3>
+          <p class="l-en" lang="en">Every tool's code and documentation are public on GitHub, so colleagues can read, reuse and adapt them for their own classes.</p><p class="l-zh" lang="zh-Hans">每个工具的源代码和说明文档都在 GitHub 上公开，同行可以查阅、直接使用，也可以按自己的课堂需要改编。</p>
         </div>
       </div>
     </div>
@@ -358,10 +438,9 @@
 
   <section class="block" id="log" aria-labelledby="log-h">
     <div class="wrap">
-      <h2 id="log-h">Log <span class="zh" lang="zh-Hans">更新记录</span></h2>
+      <h2 id="log-h"><span class="l-en" lang="en">Log <span class="acc-zh" lang="zh-Hans">更新记录</span></span><span class="l-zh" lang="zh-Hans">更新记录 <span class="acc-en" lang="en">Log</span></span></h2>
       <ol class="log">
-        <li><span class="date">Nov 2026</span><span class="tool"><span lang="zh-Hans">杏坛</span> ClassroomBoard</span><span class="note">Now in classroom use.</span></li>
-        <li><span class="date">22 Oct 2026</span><span class="tool" lang="zh-Hans">字斟句酌</span><span class="note">Launched to H2 Chinese Language &amp; Literature students.</span></li>
+        <li><span class="date l-en" lang="en">Nov 2026</span><span class="date l-zh" lang="zh-Hans">2026年11月</span><span class="tool l-en" lang="en"><span lang="zh-Hans">杏坛</span> ClassroomBoard</span><span class="tool l-zh" lang="zh-Hans">杏坛</span><span class="note l-en" lang="en">Now in classroom use.</span><span class="note l-zh" lang="zh-Hans">已投入课堂使用。</span></li><li><span class="date l-en" lang="en">22 Oct 2026</span><span class="date l-zh" lang="zh-Hans">2026年10月22日</span><span class="tool"><span lang="zh-Hans">字斟句酌</span></span><span class="note l-en" lang="en">Launched to H2 Chinese Language &amp; Literature students.</span><span class="note l-zh" lang="zh-Hans">正式推出，供 H2 华文与文学学生使用。</span></li>
       </ol>
     </div>
   </section>
@@ -371,17 +450,38 @@
   <div class="wrap">
     <div class="about">
       <div>
-        <h2>About <span class="zh" lang="zh-Hans">关于</span></h2>
-        <p>Built by Randall, Senior Teacher, Mother Tongue Languages (JC), River Valley High School.</p>
+        <h2 id="about-h"><span class="l-en" lang="en">About <span class="acc-zh" lang="zh-Hans">关于</span></span><span class="l-zh" lang="zh-Hans">关于 <span class="acc-en" lang="en">About</span></span></h2>
+        <p class="l-en" lang="en">Built by Randall, Senior Teacher, Mother Tongue Languages (JC), River Valley High School.</p><p class="l-zh" lang="zh-Hans">由 Randall 开发。</p>
       </div>
       <div>
-        <p>Interested in collaborating on AI pedagogical experiments? Email me:</p>
-        <p class="zh" lang="zh-Hans">有意合作探索AI教学实验？欢迎来信：</p>
+        <p class="l-en" lang="en">Interested in collaborating on AI pedagogical experiments? Email me:</p><p class="l-zh" lang="zh-Hans">有意合作开展 AI 教学实验？欢迎来信：</p>
         <a class="contact" href="mailto:hoon_yao_tong_randall@moe.edu.sg?subject=Languages%20AI%20Lab%20collaboration">hoon_yao_tong_randall@moe.edu.sg</a>
       </div>
     </div>
-    <p class="fine">© 2026 · Source code at <a href="https://github.com/Arkdein">github.com/Arkdein</a> · Hosted on GitHub Pages</p>
+    <p class="fine l-en" lang="en">© 2026 · Source code at <a href="https://github.com/Arkdein">github.com/Arkdein</a> · Hosted on GitHub Pages</p><p class="fine l-zh" lang="zh-Hans">© 2026 · 源代码：<a href="https://github.com/Arkdein">github.com/Arkdein</a> · 由 GitHub Pages 托管</p>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var buttons = document.querySelectorAll('.lang-switch button');
+    function apply(lang) {
+      root.setAttribute('data-lang', lang);
+      root.setAttribute('lang', lang === 'zh' ? 'zh-Hans' : 'en');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].setAttribute('aria-pressed', buttons[i].getAttribute('data-set') === lang ? 'true' : 'false');
+      }
+    }
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function () {
+        var lang = this.getAttribute('data-set');
+        apply(lang);
+        try { localStorage.setItem('lab-lang', lang); } catch (e) {}
+      });
+    }
+    apply(root.getAttribute('data-lang') === 'zh' ? 'zh' : 'en');
+  })();
+</script>
 </body>
 </html>
