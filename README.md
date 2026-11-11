@@ -8,6 +8,7 @@ Landing page for Randall's classroom web tools at River Valley High School. It l
 | 字斟句酌 · 文言字词 | https://arkdein.github.io/zizhen/ | [Arkdein/zizhen](https://github.com/Arkdein/zizhen) |
 | 词游记 · Word Journey | https://arkdein.github.io/ciyouji/ | [Arkdein/ciyouji](https://github.com/Arkdein/ciyouji) |
 | 杏坛 · ClassroomBoard | https://arkdein.github.io/xingtan/ | [Arkdein/xingtan](https://github.com/Arkdein/xingtan) |
+| 成语江湖 · The Idiom Adventure | https://arkdein.github.io/chengyu-jianghu/ | [Arkdein/chengyu-jianghu](https://github.com/Arkdein/chengyu-jianghu) |
 
 ## Deploy (once, about 5 minutes)
 
