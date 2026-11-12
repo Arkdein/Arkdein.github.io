@@ -192,6 +192,36 @@
   .poster:hover img { transform: translateY(-2px); }
   @media (max-width: 520px) { .poster { flex-basis: 100%; flex-direction: row; align-items: center; gap: 14px; } .poster img { width: 96px; } }
 
+
+  /* Build your own */
+  .bsteps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 16px; counter-reset: none; }
+  .bstep { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 0 0 6px 6px; padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .bstep-num { font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1; color: var(--accent); }
+  .bstep h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.3; }
+  .bstep h3.l-zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-weight: 700; }
+  .bstep p { margin: 0; color: var(--text-2); font-size: 15px; text-wrap: pretty; }
+  .build-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); gap: 24px; align-items: start; }
+  .brief-col { display: flex; flex-direction: column; gap: 20px; }
+  .brief { background: #1E242C; border: 1px solid rgba(255,255,255,0.12); border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 22px 26px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .brief-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .brief-label { margin: 0; font-size: 14px; letter-spacing: 0.04em; color: var(--muted); }
+  .copy-btn { appearance: none; min-height: 40px; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.22); border-radius: 4px; background: transparent; color: var(--text-2); font: inherit; font-size: 14px; cursor: pointer; }
+  .copy-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .copy-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .brief-text { display: flex; flex-direction: column; gap: 10px; }
+  .brief-text p { margin: 0; font-size: 17px; line-height: 1.65; color: var(--text); }
+  .brief-text b { color: #F2A98A; font-weight: 600; }
+  .tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 18px; }
+  .tip { padding-top: 14px; border-top: 2px solid var(--accent-line); display: flex; flex-direction: column; gap: 6px; }
+  .tip h4 { margin: 0; font-size: 16px; font-weight: 600; }
+  .tip p { margin: 0; font-size: 14px; color: var(--muted); }
+  .checklist { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 26px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .checklist h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 20px; }
+  .checklist h3.l-zh { font-family: 'Noto Sans SC', 'PingFang SC', sans-serif; font-weight: 700; }
+  .checklist ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .checklist li { display: flex; gap: 12px; align-items: flex-start; color: var(--text-2); }
+  .checklist li svg { flex: none; margin-top: 3px; color: var(--accent); }
+
   /* Principles */
   .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; }
   .principle { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 2px solid var(--accent-line); }
@@ -239,6 +269,7 @@
       <ul>
         <li><a href="#tools"><span class="l-en" lang="en">Tools</span><span class="l-zh" lang="zh-Hans">工具</span></a></li>
         <li><a href="#use"><span class="l-en" lang="en">Use in class</span><span class="l-zh" lang="zh-Hans">课堂使用</span></a></li>
+        <li><a href="#build"><span class="l-en" lang="en">Build your own</span><span class="l-zh" lang="zh-Hans">自己动手做</span></a></li>
         <li><a href="#log"><span class="l-en" lang="en">Log</span><span class="l-zh" lang="zh-Hans">更新记录</span></a></li>
         <li><a href="#about"><span class="l-en" lang="en">About</span><span class="l-zh" lang="zh-Hans">关于</span></a></li>
         <li><a class="gh" href="https://github.com/Arkdein">
@@ -437,6 +468,52 @@
     </div>
   </section>
 
+  <section class="block" id="build" aria-labelledby="build-h">
+    <div class="wrap">
+      <div class="section-head stack">
+        <h2 id="build-h"><span class="l-en" lang="en">Build your own <span class="acc-zh" lang="zh-Hans">自己动手做</span></span><span class="l-zh" lang="zh-Hans">自己动手做 <span class="acc-en" lang="en">Build your own</span></span></h2>
+        <p class="intro l-en" lang="en">The first working version of each app took about a day. Here is the process, so you can try it for your own subject.</p><p class="intro l-zh" lang="zh-Hans">每款应用的第一个可用版本，大约一天完成。以下是制作过程，供你在自己的科目中尝试。</p>
+      </div>
+      <ol class="bsteps">
+        <li class="bstep"><span class="bstep-num" aria-hidden="true">1</span><h3 class="l-en" lang="en">Name the problem</h3><h3 class="l-zh" lang="zh-Hans">界定问题</h3><p class="l-en" lang="en">What do students get wrong? What should practice feel like?</p><p class="l-zh" lang="zh-Hans">学生错在哪里？练习应该是什么样子？</p></li>
+        <li class="bstep"><span class="bstep-num" aria-hidden="true">2</span><h3 class="l-en" lang="en">Bring your materials</h3><h3 class="l-zh" lang="zh-Hans">提供教材</h3><p class="l-en" lang="en">Worksheets, answer keys, your own teaching conventions, marking guides.</p><p class="l-zh" lang="zh-Hans">练习、答案、自己的教学惯例、评分标准。</p></li>
+        <li class="bstep"><span class="bstep-num" aria-hidden="true">3</span><h3 class="l-en" lang="en">AI builds</h3><h3 class="l-zh" lang="zh-Hans">AI 动手</h3><p class="l-en" lang="en">The app, the question bank and the feedback logic, from those materials.</p><p class="l-zh" lang="zh-Hans">依据这些材料，搭建应用、题库和反馈逻辑。</p></li>
+        <li class="bstep"><span class="bstep-num" aria-hidden="true">4</span><h3 class="l-en" lang="en">Check and decide</h3><h3 class="l-zh" lang="zh-Hans">审核与裁定</h3><p class="l-en" lang="en">An independent AI review, then the teacher rules on each judgement call.</p><p class="l-zh" lang="zh-Hans">另一个 AI 独立审核，需要判断的地方由老师拍板。</p></li>
+        <li class="bstep"><span class="bstep-num" aria-hidden="true">5</span><h3 class="l-en" lang="en">Publish, then iterate</h3><h3 class="l-zh" lang="zh-Hans">上线后改进</h3><p class="l-en" lang="en">Free hosting on GitHub Pages; improve from what students ask.</p><p class="l-zh" lang="zh-Hans">免费托管于 GitHub Pages，根据学生的提问持续改进。</p></li>
+      </ol>
+      <div class="build-grid">
+        <div class="brief-col">
+          <div class="brief">
+            <div class="brief-head">
+              <p class="brief-label l-en" lang="en">A brief you could give an AI assistant tomorrow</p><p class="brief-label l-zh" lang="zh-Hans">明天就可以交给 AI 助手的一段说明</p>
+              <button type="button" class="copy-btn" data-copy="brief"><span class="l-en" lang="en">Copy</span><span class="l-zh" lang="zh-Hans">复制</span></button>
+            </div>
+            <div class="brief-text l-en" lang="en"><p>My <b>[level]</b> students struggle with <b>[skill]</b>. They usually go wrong by <b>[common error]</b>.</p><p>Attached are my <b>[worksheets / answer keys / marking guide]</b>. Use only these.</p><p>Build a phone-friendly practice app that gives feedback on <b>[what to check]</b>, tracks <b>[what to track]</b>, and lets students send me <b>[questions / a progress report]</b>.</p></div>
+            <div class="brief-text l-zh" lang="zh-Hans"><p>我的 <b>［年级］</b> 学生在 <b>［技能］</b> 方面有困难，常犯的错误是 <b>［常见错误］</b>。</p><p>附上我的 <b>［练习／答案／评分标准］</b>，请只依据这些材料。</p><p>请做一个适合在手机上用的练习应用：针对 <b>［要检查的内容］</b> 给反馈，记录 <b>［要追踪的数据］</b>，并让学生能把 <b>［提问／进度报告］</b> 发给我。</p></div>
+          </div>
+          <div class="tips">
+            <div class="tip"><h4 class="l-en" lang="en">Start small</h4><h4 class="l-zh" lang="zh-Hans">从小处着手</h4><p class="l-en" lang="en">20 good items beat 200 unchecked ones.</p><p class="l-zh" lang="zh-Hans">20 道审核过的题，胜过 200 道没检查的题。</p></div>
+            <div class="tip"><h4 class="l-en" lang="en">Pilot one class</h4><h4 class="l-zh" lang="zh-Hans">先在一个班试行</h4><p class="l-en" lang="en">Read their questions; they tell you what to fix.</p><p class="l-zh" lang="zh-Hans">读学生的提问，就知道该改哪里。</p></div>
+            <div class="tip"><h4 class="l-en" lang="en">Own the content</h4><h4 class="l-zh" lang="zh-Hans">内容握在自己手里</h4><p class="l-en" lang="en">Keep answers in a file you can edit yourself.</p><p class="l-zh" lang="zh-Hans">把答案放在自己能修改的文件里。</p></div>
+          </div>
+        </div>
+        <div class="checklist">
+          <h3 class="l-en" lang="en">Is your skill a good candidate?</h3><h3 class="l-zh" lang="zh-Hans">判断一项技能是否适合的五个迹象</h3>
+          <ul>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg><span class="l-en" lang="en">Students need many repetitions, not one explanation</span><span class="l-zh" lang="zh-Hans">学生需要的是反复练习，而不是再讲一遍</span></li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg><span class="l-en" lang="en">Answers can be checked against a key or clear criteria</span><span class="l-zh" lang="zh-Hans">学生的作答可以对照答案或明确的标准核对</span></li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg><span class="l-en" lang="en">Common errors are predictable, so feedback can name them</span><span class="l-zh" lang="zh-Hans">常见错误可以预料，反馈就能直接点明</span></li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg><span class="l-en" lang="en">You already have worksheets and answer keys</span><span class="l-zh" lang="zh-Hans">手上已经有现成的练习和答案</span></li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg><span class="l-en" lang="en">Feedback now arrives days later, or not at all</span><span class="l-zh" lang="zh-Hans">目前的反馈要等几天，甚至没有</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="use-notes">
+        <p class="l-en" lang="en">Want to try a first build together? <a href="mailto:hoon_yao_tong_randall@moe.edu.sg?subject=Languages%20AI%20Lab%20collaboration">Email me</a>.</p><p class="l-zh" lang="zh-Hans">想一起做第一个版本？<a href="mailto:hoon_yao_tong_randall@moe.edu.sg?subject=Languages%20AI%20Lab%20collaboration">欢迎来信</a>。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="principles" aria-labelledby="principles-h">
     <div class="wrap">
       <h2 id="principles-h"><span class="l-en" lang="en">How they are built <span class="acc-zh" lang="zh-Hans">设计理念</span></span><span class="l-zh" lang="zh-Hans">设计理念 <span class="acc-en" lang="en">How they are built</span></span></h2>
@@ -505,6 +582,28 @@
       });
     }
     apply(root.getAttribute('data-lang') === 'zh' ? 'zh' : 'en');
+  })();
+
+  (function () {
+    var btns = document.querySelectorAll('.copy-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function () {
+        var btn = this;
+        var lang = document.documentElement.getAttribute('data-lang') === 'zh' ? 'l-zh' : 'l-en';
+        var box = btn.closest('.brief').querySelector('.brief-text.' + lang);
+        var text = Array.prototype.map.call(box.querySelectorAll('p'), function (p) { return p.innerText; }).join('\n');
+        function done(ok) {
+          var spans = btn.querySelectorAll('span');
+          var old = [spans[0].textContent, spans[1].textContent];
+          spans[0].textContent = ok ? 'Copied' : 'Select and copy';
+          spans[1].textContent = ok ? '已复制' : '请手动复制';
+          setTimeout(function () { spans[0].textContent = old[0]; spans[1].textContent = old[1]; }, 1800);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        } else { done(false); }
+      });
+    }
   })();
 </script>
 <script data-goatcounter="https://arkdein.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
